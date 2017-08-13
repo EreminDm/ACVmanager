@@ -1,0 +1,42 @@
+﻿@model AcmMvcApp.Models.UserProfileEditModel
+@{
+    ViewBag.Title = "Редактирование";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>Редактирование пользователя.</h2>
+</hgroup>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>Форма регистрации</legend>
+        @Html.HiddenFor(model => model.userProfile.UserId)
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.userProfile.UserName)
+                @Html.TextBoxFor(m => m.userProfile.UserName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.NewPassword)
+                @Html.PasswordFor(m => m.NewPassword)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.userProfile.IsActive)
+                @Html.EditorFor(m => m.userProfile.IsActive)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.selectedRole)
+                @Html.DropDownListFor(m => m.selectedRole, new SelectList(Model.getAllRoles()))
+            </li>
+        </ol>
+        <input type="submit" value="Сохранить" />
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

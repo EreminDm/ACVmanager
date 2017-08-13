@@ -1,0 +1,36 @@
+﻿@model AcmMvcApp.Models.Package
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Package</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.urlName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.urlName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.isActive)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.isActive)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

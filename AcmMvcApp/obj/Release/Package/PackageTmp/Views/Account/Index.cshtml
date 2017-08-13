@@ -1,0 +1,41 @@
+﻿@using AcmMvcApp.Models
+@model AcmMvcApp.Models.UserProfileViewModel
+
+@{
+    ViewBag.Title = "Пользователи";
+}
+
+<h2>Пользователи</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.userProfile.UserName)
+        </th>
+        <th>
+            Список ролей
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.userProfiles) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Model.getUserProfileRoles(item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id=item.UserId })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<AcmMvcApp.Models.Package>
+
+@{
+    ViewBag.Title = "Пакеты услуг";
+}
+
+<h2>Пакеты услуг</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.urlName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isActive)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.urlName, "Edit", new { id=item.Id })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isActive)
+        </td>
+        <td>
+            @Html.ActionLink("Детали", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Удалить", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
