@@ -1,0 +1,411 @@
+﻿@using AcmMvcApp.Models
+@model AcmMvcApp.Models.PackageViewModel
+
+@{
+    ViewBag.Title = "Пакет";
+}
+
+
+@*This is for jquery*@
+<script src="../../Scripts/jquery-1.7.2.js" type="text/javascript"></script>
+@*This is for jquery UI, for Calender control*@
+<script src="../../Scripts/jquery-ui-1.8.20.js" type="text/javascript"></script>
+@*This is for JSON*@
+<script src="../../Scripts/json2.js" type="text/javascript"></script>
+@*These are for DataTables*@
+<script src="../../Scripts/DataTables/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="../../Scripts/DataTables/dataTables.select.min.js" type="text/javascript"></script>
+<link href="../../Content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<link href="../../Scripts/DataTables/select.dataTables.min.css" rel="stylesheet" type="text/css" />
+@*<link href="../../Scripts/DataTables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />*@
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover{background-color:#f5f5f5}
+
+    fieldset {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow:  0px 0px 0px 0px #000;
+                box-shadow:  0px 0px 0px 0px #000;
+    }
+
+    fieldset legend {
+        display: block;
+        font-size: 1.3em;
+        font-weight: bold;
+        margin: 0 0 5px;
+    }
+
+    input[type=button] {
+        
+        padding: 3px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+
+
+</style>
+
+<script type="text/javascript">
+
+
+    // This function is used fro 
+    // delete selected row from Detail Table
+    // set deleted item to Edit text Boxes
+    function DeleteClientRow() {
+        $('#tblClients').dataTable().api().row('.selected').remove().draw();
+    }
+    function DeleteContentRow() {
+        $('#tblContents').dataTable().api().row('.selected').remove().draw();
+    }
+    function DeleteDisplayRow() {
+        $('#tblDisplays').dataTable().api().row('.selected').remove().draw();
+    }
+
+    // this function is used to add item to list table
+    function AddClient() {
+        $('#tblClients').dataTable().fnAddData([$('#SelectedClientId').val(), $('#SelectedClientId').find(":selected").text()]);
+    }
+    function AddContent() {
+        $('#tblContents').dataTable().fnAddData([$('#SelectedContentId').val(), $('#SelectedContentId').find(":selected").text(), '', '']);
+    }
+    function AddDisplay() {
+        $('#tblDisplays').dataTable().fnAddData([$('#SelectedDisplayId').val(), $('#SelectedDisplayId').find(":selected").text(), '']);
+    }
+
+    $(document).ready(function () {
+
+        // here i have used datatables.js (jQuery Data Table)
+        $('#tblClients').DataTable({
+            sDom: 'T<"clear">lfrtip',
+            bLengthChange: false,
+            bFilter: false,
+            bSort: true,
+            bInfo: false,
+            select: {
+                style: 'single'
+            }
+        });
+        
+        $('#tblContents').DataTable({
+            sDom: 'T<"clear">lfrtip',
+            bLengthChange: false,
+            bFilter: false,
+            bSort: true,
+            bInfo: false,
+            select: {
+                style: 'single'
+            }
+        });
+
+        $('#tblDisplays').DataTable({
+            sDom: 'T<"clear">lfrtip',
+            bLengthChange: false,
+            bFilter: false,
+            bSort: true,
+            bInfo: false,
+            select: {
+                style: 'single'
+            }
+        });
+
+        //$('#SalesDate').datepicker();
+
+        var clTable = $('#tblClients').dataTable();
+        $('#tblClients tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                clTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        var contTable = $('#tblContents').dataTable();
+        $('#tblContents tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                contTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        var displayTable = $('#tblDisplays').dataTable();
+        $('#tblDisplays tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                displayTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+    });
+
+
+    //This function is used for sending data(JSON Data) to PackageController
+    function Package_save() {
+        // Step 1: Read View Data and Create JSON Object
+
+        // Creating u_package_u_client Json Object
+        var cl_pkg_link = { "Id": "", "ClientId": "", "PackageId": "" };
+        var content_pkg_link = { "Id": "", "ContentId": "", "PackageId": "" };
+        var display_pkg_link = { "Id": "", "DisplayId": "", "PackageId": "" };
+
+        // Creating Package Json Object
+        var pkg = { "Id": "", "urlName": "", "description": "", "isActive": "", "Clients": [], "Contents": [], "Displays": [] };
+
+        // Set Package Value
+        pkg.Id = $("#PackageId").val();
+        pkg.urlName = $("#package_urlName").val();
+        pkg.description = $("#package_description").val();
+        pkg.isActive = $("#package_isActive").val();
+
+        // Getting Table Data from where we will fetch u_package_u_client Record
+        // заполнение клиентов
+        var clTable = $('#tblClients').dataTable().fnGetData();
+        for (var i = 0; i < clTable.length; i++) {
+            cl_pkg_link.PackageId = $('#PackageId').val();
+            cl_pkg_link.ClientId = clTable[i][0];
+            pkg.Clients.push(cl_pkg_link);
+            cl_pkg_link = { "Id": "", "ClientId": "", "PackageId": "" };
+        }
+
+        // заполнение контента
+        var contTable = $('#tblContents').dataTable().fnGetData();
+        for (var i = 0; i < contTable.length; i++) {
+            content_pkg_link.PackageId = $('#PackageId').val();
+            content_pkg_link.ContentId = contTable[i][0];
+            pkg.Contents.push(content_pkg_link);
+            content_pkg_link = { "Id": "", "ContentId": "", "PackageId": "" };
+        }
+
+        // заполнение дисплеев
+        var displayTable = $('#tblDisplays').dataTable().fnGetData();
+        for (var i = 0; i < displayTable.length; i++) {
+            display_pkg_link.PackageId = $('#PackageId').val();
+            display_pkg_link.DisplayId = displayTable[i][0];
+            pkg.Displays.push(display_pkg_link);
+            display_pkg_link = { "Id": "", "DisplayId": "", "PackageId": "" };
+        }
+        // Step 1: Ends Here
+
+
+        // Set 2: Ajax Post
+        // Here i have used ajax post for saving/updating information
+        $.ajax({
+            url: '../../Package/Edit',
+            data: JSON.stringify(pkg),
+            type: 'POST',
+            contentType: 'application/json;',
+            dataType: 'json',
+            success: function (result) {
+
+                if (result.Success == "1") {
+                    window.location.href = "../../Package/index";
+                }
+                else {
+                    alert(result.ex);
+                }
+            }
+        });
+
+
+    }
+
+</script>
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+        
+    <fieldset>
+
+        <legend>Пакет @Html.ValueFor(model => model.package.urlName)</legend>
+
+        @Html.HiddenFor(model => model.package.Id)
+
+        @if (Model != null)
+        {
+             <input type="hidden" id = "PackageId" name ="PackageId" value = "@Model.package.Id" />
+        }
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.package.urlName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.package.urlName)
+            @Html.ValidationMessageFor(model => model.package.urlName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.package.description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.package.description)
+            @Html.ValidationMessageFor(model => model.package.description)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.package.isActive)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.package.isActive)
+            @Html.ValidationMessageFor(model => model.package.isActive)
+        </div>
+    </fieldset> 
+    
+    <br />  
+    
+    <fieldset>
+        <legend>Клиенты</legend>
+
+            @Html.DropDownListFor(m => m.SelectedClientId, Model.ClientItems) 
+            <input type="button" id="AddClientButton" class="AddBtnClass" value= "+" onclick="AddClient()"/>
+
+            <table class="tbl" id="tblClients">
+                <thead>
+                    <tr>
+                        <th>Id</th><th>Наименование</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.package.Clients)
+                        {
+                            <tr>
+                                <td>
+                                @Html.DisplayTextFor(i => item.Client.Id)
+                                </td>
+                                <td>
+                                @Html.DisplayTextFor(i => item.Client.name)
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+            </table>
+
+            <input type="button" id="DeleteClientButton" value="Удалить" onclick="DeleteClientRow()" />
+    </fieldset>
+    
+    <fieldset>
+        <legend>Дисплеи</legend>
+
+            @Html.DropDownListFor(m => m.SelectedDisplayId, Model.DisplayItems) 
+            <input type="button" id="AddDisplayButton" class="AddBtnClass" value= "+" onclick="AddDisplay()"/>
+
+            <table class="tbl" id="tblDisplays">
+                <thead>
+                    <tr>
+                        <th>Id</th><th>Наименование</th><th>Адрес</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.package.Displays)
+                        {
+                            <tr>
+                                <td>
+                                @Html.DisplayTextFor(i => item.Display.Id)
+                                </td>
+                                <td>
+                                @Html.DisplayTextFor(i => item.Display.name)
+                                </td>
+                                <td>
+                                @Html.DisplayTextFor(i => item.Display.address)
+                                </td>
+                                
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+            </table>
+
+            <input type="button" id="DeleteDisplayButton" value="Удалить" onclick="DeleteDisplayRow()" />
+    </fieldset>
+    
+    <fieldset>
+        <legend>Контент</legend>
+
+            @Html.DropDownListFor(m => m.SelectedContentId, Model.ContentItems) 
+            <input type="button" id="AddContentButton" class="AddBtnClass" value= "+" onclick="AddContent()"/>
+
+            <table class="tbl" id="tblContents">
+                <thead>
+                    <tr>
+                        <th>Id</th><th>Наименование</th><th>Расширение</th><th>Продолжительность</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.package.Contents)
+                        {
+                            <tr>
+                                <td>
+                                @Html.DisplayTextFor(i => item.Content.Id)
+                                </td>
+                                <td>
+                                @Html.DisplayTextFor(i => item.Content.name)
+                                </td>
+                                <td>
+                                @Html.DisplayTextFor(i => item.Content.extension)
+                                </td>
+                                <td>
+                                @Html.DisplayTextFor(i => item.Content.duration)
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+            </table>
+
+            <input type="button" id="DeleteContentButton" value="Удалить" onclick="DeleteContentRow()" />
+    </fieldset>
+    
+    <input type="button" value="Сохранить" onclick="Package_save()" />
+    
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,76 @@
+﻿@using AcmMvcApp.Controllers
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink(" ","Index","Home",null,
+                                                    new
+                                                    {
+                                                        style = "background: url('" + Url.Content("~/Images/rtsDecauxLogo.png") + "') no-repeat center left; display:block; height:45px; width:281px;"
+                                                    }
+                                                )</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                    @if (Request.IsAuthenticated) {
+                        <nav>
+                            <ul id="menu">
+                                <li>@Html.ActionLink("Пакеты", "Index", "Package")</li>
+                                <li>@Html.ActionLink("Клиенты", "Index", "Client")</li>
+                                <li>@Html.ActionLink("Дисплеи", "Index", "Display")</li>
+                                <li>@Html.ActionLink("Контент", "Index", "ContentDisp")</li>
+                                @if (AccountController.isUserAdmin) {
+                                <li>@Html.ActionLink("Пользователи", "Index", "Account")</li>
+                                }
+                            </ul>
+                        </nav>
+                    }
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                <style>
+                    table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+
+                    th, td {
+                        padding: 8px;
+                        text-align: left;
+                        border-bottom: 1px solid #ddd;
+                    }
+
+                    tr:hover{background-color:#f5f5f5}
+                </style>
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year</p>
+                </div>
+            </div>
+        </footer>
+
+        @*@Scripts.Render("~/bundles/jquery")*@
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

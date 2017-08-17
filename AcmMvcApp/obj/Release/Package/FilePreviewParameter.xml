@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="manager" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\DELL\ Inspiron15\\Documents\\Visual\ Studio\ 2017\\Projects\\AcmMvcApp\\AcmMvcApp\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\DELL\ Inspiron15\\Documents\\Visual\ Studio\ 2017\\Projects\\AcmMvcApp\\AcmMvcApp\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="Add write permission to App_Data Folder" description="Add write permission to App_Data folder" value="manager/App_Data" tags="Hidden">
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\DELL\ Inspiron15\\Documents\\Visual\ Studio\ 2017\\Projects\\AcmMvcApp\\AcmMvcApp\\obj\\Release\\Package\\PackageTmp\\App_Data$" />
+  </parameter>
+  <parameter name="ClientContext-Web.config Connection String" description="" value="data source=.\SQLEXPRESS;attachdbfilename=&quot;C:\Users\DELL Inspiron15\Documents\Visual Studio 2017\Projects\AcmMvcApp\AcmMvcApp\App_Data\aspnet-AcmMvcApp-20170619222827.mdf&quot;;integrated security=True;connect timeout=30;MultipleActiveResultSets=True" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\DELL\ Inspiron15\\Documents\\Visual\ Studio\ 2017\\Projects\\AcmMvcApp\\AcmMvcApp\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ClientContext']/@connectionString" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="" value="Data Source=(LocalDb)\v11.0;Initial Catalog=aspnet-AcmMvcApp-20170619222827;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\aspnet-AcmMvcApp-20170619222827.mdf" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\DELL\ Inspiron15\\Documents\\Visual\ Studio\ 2017\\Projects\\AcmMvcApp\\AcmMvcApp\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

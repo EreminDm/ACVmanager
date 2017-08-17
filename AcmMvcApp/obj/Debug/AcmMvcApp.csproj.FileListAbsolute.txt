@@ -200,3 +200,5 @@ C:\Users\DELL Inspiron15\Documents\Visual Studio 2017\Projects\AcmMvcApp\AcmMvcA
 C:\Users\DELL Inspiron15\Documents\Visual Studio 2017\Projects\AcmMvcApp\AcmMvcApp\obj\Debug\AcmMvcApp.csprojResolveAssemblyReference.cache
 C:\Users\DELL Inspiron15\Documents\Visual Studio 2017\Projects\AcmMvcApp\AcmMvcApp\obj\Debug\AcmMvcApp.dll
 C:\Users\DELL Inspiron15\Documents\Visual Studio 2017\Projects\AcmMvcApp\AcmMvcApp\obj\Debug\AcmMvcApp.pdb
+C:\Users\DELL Inspiron15\Documents\Visual Studio 2017\Projects\AcmMvcApp\AcmMvcApp\bin\App_Data\aspnet-AcmMvcApp-20170619222827.mdf
+C:\Users\DELL Inspiron15\Documents\Visual Studio 2017\Projects\AcmMvcApp\AcmMvcApp\bin\App_Data\aspnet-AcmMvcApp-20170619222827_log.ldf
